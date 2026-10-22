@@ -1,0 +1,190 @@
+{
+  "entities": {
+    "Item": {
+      "title": "Item",
+      "description": "Producto o artículo en el inventario del almacén",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identificador único del artículo"
+        },
+        "name": {
+          "type": "string",
+          "description": "Nombre del producto",
+          "maxLength": 200
+        },
+        "sku": {
+          "type": "string",
+          "description": "Código SKU",
+          "maxLength": 50
+        },
+        "barcode": {
+          "type": "string",
+          "description": "Código de barras o QR",
+          "maxLength": 100
+        },
+        "category": {
+          "type": "string",
+          "description": "Categoría del producto",
+          "maxLength": 100
+        },
+        "location": {
+          "type": "string",
+          "description": "Ubicación en el almacén (ej: Pasillo A-02)",
+          "maxLength": 100
+        },
+        "quantity": {
+          "type": "number",
+          "description": "Cantidad actual en stock"
+        },
+        "minQuantity": {
+          "type": "number",
+          "description": "Nivel de stock mínimo de seguridad"
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unidad de medida (unidades, kg, m, cajas, etc.)",
+          "maxLength": 30
+        },
+        "unitPrice": {
+          "type": "number",
+          "description": "Precio o costo unitario"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detalles adicionales",
+          "maxLength": 500
+        },
+        "lastUpdated": {
+          "type": "string",
+          "description": "Fecha y hora de última modificación"
+        },
+        "updatedBy": {
+          "type": "string",
+          "description": "Usuario que realizó el cambio",
+          "maxLength": 150
+        }
+      },
+      "required": ["id", "name", "sku", "barcode", "quantity", "unit"]
+    },
+    "Movement": {
+      "title": "Movement",
+      "description": "Registro de movimiento de inventario (Entrada, Salida, Ajuste)",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID del movimiento"
+        },
+        "itemId": {
+          "type": "string",
+          "description": "ID del artículo modificado"
+        },
+        "itemName": {
+          "type": "string",
+          "description": "Nombre del artículo",
+          "maxLength": 200
+        },
+        "barcode": {
+          "type": "string",
+          "description": "Código de barras escaneado",
+          "maxLength": 100
+        },
+        "type": {
+          "type": "string",
+          "enum": ["ENTRADA", "SALIDA", "AJUSTE", "MERMA"],
+          "description": "Tipo de movimiento"
+        },
+        "quantity": {
+          "type": "number",
+          "description": "Cantidad involucrada en la transacción"
+        },
+        "previousStock": {
+          "type": "number",
+          "description": "Stock previo al movimiento"
+        },
+        "newStock": {
+          "type": "number",
+          "description": "Stock resultante tras el movimiento"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Motivo del movimiento",
+          "maxLength": 300
+        },
+        "reference": {
+          "type": "string",
+          "description": "Referencia de documento (Orden de compra, factura, etc.)",
+          "maxLength": 100
+        },
+        "performedBy": {
+          "type": "string",
+          "description": "Email o nombre del operario",
+          "maxLength": 150
+        },
+        "performedByRole": {
+          "type": "string",
+          "description": "Rol del usuario que realizó la acción",
+          "maxLength": 50
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Fecha y hora del registro ISO"
+        }
+      },
+      "required": ["id", "itemId", "itemName", "type", "quantity", "performedBy", "timestamp"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Perfil del empleado y rol asignado en almacén",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "UID de autenticación"
+        },
+        "email": {
+          "type": "string",
+          "description": "Correo del empleado",
+          "maxLength": 150
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Nombre del empleado",
+          "maxLength": 150
+        },
+        "role": {
+          "type": "string",
+          "enum": ["admin", "supervisor", "operator"],
+          "description": "Rol asignado"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Fecha de alta"
+        }
+      },
+      "required": ["uid", "email", "role"]
+    }
+  },
+  "firestore": {
+    "/items/{itemId}": {
+      "schema": {
+        "$ref": "#/entities/Item"
+      },
+      "description": "Artículos y existencias del inventario en almacén"
+    },
+    "/movements/{movementId}": {
+      "schema": {
+        "$ref": "#/entities/Movement"
+      },
+      "description": "Historial de entradas, salidas y ajustes de inventario"
+    },
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Directorio de usuarios y roles del personal de almacén"
+    }
+  }
+}

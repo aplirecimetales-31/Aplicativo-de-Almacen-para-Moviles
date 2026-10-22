@@ -1,0 +1,10 @@
+{
+  "name": "Almacén Móvil Pro - Inventario & Escáner",
+  "description": "Sistema móvil para control de inventario y almacenes con escaneo de código de barras y QR, sincronización en tiempo real en la nube, roles de usuario y reportes PDF mensuales.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
